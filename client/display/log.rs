@@ -119,17 +119,17 @@ pub fn print_task_info(task: &Task) {
     let task_cell = Cell::new(format!("Task {}: ", task.id)).add_attribute(Attribute::Bold);
 
     let (exit_status, color) = match &task.result {
-        Some(TaskResult::Success) => ("completed successfully".into(), Color::Green),
+        Some(TaskResult::Success) => ("completed successfully".into(), Color::DarkGreen),
         Some(TaskResult::Failed(exit_code)) => {
-            (format!("failed with exit code {}", exit_code), Color::Red)
+            (format!("failed with exit code {}", exit_code), Color::DarkRed)
         }
-        Some(TaskResult::FailedToSpawn(err)) => (format!("failed to spawn: {}", err), Color::Red),
-        Some(TaskResult::Killed) => ("killed by system or user".into(), Color::Red),
-        Some(TaskResult::Errored) => ("some IO error.\n Check daemon log.".into(), Color::Red),
-        Some(TaskResult::DependencyFailed) => ("dependency failed".into(), Color::Red),
+        Some(TaskResult::FailedToSpawn(err)) => (format!("failed to spawn: {}", err), Color::DarkRed),
+        Some(TaskResult::Killed) => ("killed by system or user".into(), Color::DarkRed),
+        Some(TaskResult::Errored) => ("some IO error.\n Check daemon log.".into(), Color::DarkRed),
+        Some(TaskResult::DependencyFailed) => ("dependency failed".into(), Color::DarkRed),
         None => match &task.status {
             TaskStatus::Paused => ("paused".into(), Color::White),
-            TaskStatus::Running => ("running".into(), Color::Yellow),
+            TaskStatus::Running => ("running".into(), Color::DarkYellow),
             _ => (task.status.to_string(), Color::White),
         },
     };
@@ -198,14 +198,14 @@ pub fn print_local_log(task_id: usize, settings: &Settings, lines: Option<usize>
         &mut stdout,
         &mut stdout_file,
         &lines,
-        style_text("stdout:", Some(Color::Green), Some(Attribute::Bold)),
+        style_text("stdout:", Some(Color::DarkGreen), Some(Attribute::Bold)),
     );
 
     print_local_file(
         &mut stdout,
         &mut stderr_file,
         &lines,
-        style_text("stderr:", Some(Color::Red), Some(Attribute::Bold)),
+        style_text("stderr:", Some(Color::DarkRed), Some(Attribute::Bold)),
     );
 }
 
@@ -252,9 +252,9 @@ pub fn print_remote_log(task_log: &TaskLogMessage) {
 /// Print log output of a finished process.
 pub fn print_remote_task_log(task_log: &TaskLogMessage, stdout: bool) -> Result<()> {
     let (pre_text, color, bytes) = if stdout {
-        ("stdout: ", Color::Green, task_log.stdout.as_ref().unwrap())
+        ("stdout: ", Color::DarkGreen, task_log.stdout.as_ref().unwrap())
     } else {
-        ("stderr: ", Color::Red, task_log.stderr.as_ref().unwrap())
+        ("stderr: ", Color::DarkRed, task_log.stderr.as_ref().unwrap())
     };
 
     println!(

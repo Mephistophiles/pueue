@@ -120,14 +120,14 @@ fn log_status_change(current_time: &str, previous_status: TaskStatus, task: &Tas
                 format!(
                     "Task {} succeeded with {}",
                     style_text(task.id, None, Some(Attribute::Bold)),
-                    style_text("0", Some(Color::Green), None)
+                    style_text("0", Some(Color::DarkGreen), None)
                 )
             }
             Some(TaskResult::DependencyFailed) => {
                 format!(
                     "Task {} failed due to {}",
                     style_text(task.id, None, Some(Attribute::Bold)),
-                    style_text("failed dependencies", Some(Color::Red), None)
+                    style_text("failed dependencies", Some(Color::DarkRed), None)
                 )
             }
 
@@ -135,28 +135,28 @@ fn log_status_change(current_time: &str, previous_status: TaskStatus, task: &Tas
                 format!(
                     "Task {} {}",
                     style_text(task.id, None, Some(Attribute::Bold)),
-                    style_text("failed to spawn", Some(Color::Red), None)
+                    style_text("failed to spawn", Some(Color::DarkRed), None)
                 )
             }
             Some(TaskResult::Failed(exit_code)) => {
                 format!(
                     "Task {} failed with {}",
                     style_text(task.id, None, Some(Attribute::Bold)),
-                    style_text(exit_code, Some(Color::Red), Some(Attribute::Bold))
+                    style_text(exit_code, Some(Color::DarkRed), Some(Attribute::Bold))
                 )
             }
             Some(TaskResult::Errored) => {
                 format!(
                     "Task {} experienced an {}.",
                     style_text(task.id, None, Some(Attribute::Bold)),
-                    style_text("IO error", Some(Color::Red), Some(Attribute::Bold))
+                    style_text("IO error", Some(Color::DarkRed), Some(Attribute::Bold))
                 )
             }
             Some(TaskResult::Killed) => {
                 format!(
                     "Task {} has been {}",
                     style_text(task.id, None, Some(Attribute::Bold)),
-                    style_text("killed", Some(Color::Red), None)
+                    style_text("killed", Some(Color::DarkRed), None)
                 )
             }
             None => panic!("Got a 'Done' task without a task result. Please report this bug."),
@@ -179,8 +179,8 @@ fn log_status_change(current_time: &str, previous_status: TaskStatus, task: &Tas
 
 fn get_color_for_status(task_status: &TaskStatus) -> Color {
     match task_status {
-        TaskStatus::Running | TaskStatus::Done => Color::Green,
+        TaskStatus::Running | TaskStatus::Done => Color::DarkGreen,
         TaskStatus::Paused | TaskStatus::Locked => Color::White,
-        _ => Color::Yellow,
+        _ => Color::DarkYellow,
     }
 }

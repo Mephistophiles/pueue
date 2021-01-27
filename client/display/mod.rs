@@ -21,6 +21,6 @@ pub fn print_success(message: &str) {
 
 /// Used to style any generic failure message from the daemon.
 pub fn print_error(message: &str) {
-    let styled = style_text(message, Some(Color::Red), None);
+    let styled = style_text(message, Some(Color::DarkRed), None);
     println!("{}", styled);
 }

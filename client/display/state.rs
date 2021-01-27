@@ -127,16 +127,20 @@ fn print_table(tasks: &BTreeMap<usize, Task>, settings: &Settings) {
         // Determine the human readable task status representation and the respective color.
         let status_string = task.status.to_string();
         let (status_text, color) = match task.status {
-            TaskStatus::Running => (status_string, Color::Green),
+            TaskStatus::Running => (status_string, Color::DarkGreen),
             TaskStatus::Paused | TaskStatus::Locked => (status_string, Color::White),
             TaskStatus::Done => match &task.result {
-                Some(TaskResult::Success) => (TaskResult::Success.to_string(), Color::Green),
-                Some(TaskResult::DependencyFailed) => ("Dependency failed".to_string(), Color::Red),
-                Some(TaskResult::FailedToSpawn(_)) => ("Failed to spawn".to_string(), Color::Red),
-                Some(result) => (result.to_string(), Color::Red),
+                Some(TaskResult::Success) => (TaskResult::Success.to_string(), Color::DarkGreen),
+                Some(TaskResult::DependencyFailed) => {
+                    ("Dependency failed".to_string(), Color::DarkRed)
+                }
+                Some(TaskResult::FailedToSpawn(_)) => {
+                    ("Failed to spawn".to_string(), Color::DarkRed)
+                }
+                Some(result) => (result.to_string(), Color::DarkRed),
                 None => panic!("Got a 'Done' task without a task result. Please report this bug."),
             },
-            _ => (status_string, Color::Yellow),
+            _ => (status_string, Color::DarkYellow),
         };
         row.add_cell(Cell::new(status_text).fg(color));
 
@@ -161,8 +165,8 @@ fn print_table(tasks: &BTreeMap<usize, Task>, settings: &Settings) {
         // Match the color of the exit code.
         // If the exit_code is none, it has been killed by the task handler.
         let exit_code_cell = match task.result {
-            Some(TaskResult::Success) => Cell::new("0").fg(Color::Green),
-            Some(TaskResult::Failed(code)) => Cell::new(&code.to_string()).fg(Color::Red),
+            Some(TaskResult::Success) => Cell::new("0").fg(Color::DarkGreen),
+            Some(TaskResult::Failed(code)) => Cell::new(&code.to_string()).fg(Color::DarkRed),
             _ => Cell::new(""),
         };
         row.add_cell(exit_code_cell);
